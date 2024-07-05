@@ -1,0 +1,40 @@
+{
+  "name": "top-messenger-app-api",
+  "version": "1.0.0",
+  "type": "module",
+  "engines": {
+    "node": ">=21.4.0",
+    "npm": ">=10.2.4"
+  },
+  "main": "./dist/App.js",
+  "scripts": {
+    "dev": "tsx watch --env-file=.env ./src/App.ts",
+    "build": "tsc --build",
+    "start": "npm run build & node --watch --env-file=.env ./dist/App.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BookmanJunior/TOP-Messenger-App-Api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@eslint/js": "^9.6.0",
+    "@types/eslint__js": "^8.42.3",
+    "@types/express": "^4.17.21",
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^20.14.10",
+    "@types/pg": "^8.11.6",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "3.3.2",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3",
+    "typescript-eslint": "^7.15.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "morgan": "^1.10.0",
+    "pg": "^8.12.0"
+  }
+}
