@@ -13,18 +13,16 @@ export const user_post = [
     .trim()
     .isLength({ min: 8 })
     .escape(),
-  body(
-    "confirmPassword",
-    "Confirm Password must be at least 8 characters long."
-  )
+  body("confirmPassword", "Password must be at least 8 characters long.")
     .trim()
     .isLength({ min: 8 })
-    .custom((confirmPassword, { req }) => {
+    .custom((confirmPassword: string, { req }) => {
       const { password } = req.body as User;
-      if (confirmPassword !== password)
-        throw new Error("Passwords don't match");
-    }),
-  body("username", "Username must be between 2 and 30 characters long")
+      return confirmPassword === password;
+    })
+    .withMessage("Passwords don't match.")
+    .escape(),
+  body("username", "Username must be between 2 and 30 characters long.")
     .trim()
     .isLength({ min: 2, max: 30 })
     .bail()
@@ -34,8 +32,6 @@ export const user_post = [
         "SELECT USERNAME FROM USERS WHERE USERNAME = $1",
         [value]
       );
-
-      console.log(res.rows);
 
       if (res.rows.length)
         throw new Error("Username exists. Please pick a different username.");
