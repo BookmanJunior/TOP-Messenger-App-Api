@@ -20,3 +20,7 @@ export default async function dbquery<T>(
   const res = await pool.query(query, params);
   return res;
 }
+
+export const getClient = () => {
+  return pool.connect();
+};
