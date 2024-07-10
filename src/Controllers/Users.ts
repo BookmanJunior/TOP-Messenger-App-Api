@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { body, validationResult } from "express-validator";
-// import { hashSync, genSalt } from "bcrypt";
+import bcrypt from "bcrypt";
 import dbquery from "../DB/DB";
 import { User } from "../Types/User";
 
@@ -43,17 +43,17 @@ export const user_post = [
     next: NextFunction
   ) => {
     const errors = validationResult(req);
-    console.log("Called");
 
     if (!errors.isEmpty()) {
       return res.status(400).send(errors.mapped());
     }
 
     try {
-      const queryString = `INSERT INTO USERS (name, username, password) VALUES($1, $2, $3) RETURNING *`;
-      const queryParams = [req.body.name, req.body.username, req.body.password];
-      const queryRes = await dbquery(queryString, queryParams);
-      res.status(200).send(queryRes);
+      const hashedPassword = await bcrypt.hash(req.body.password, 16);
+      const queryString = `INSERT INTO USERS (name, username, password) VALUES($1, $2, $3)`;
+      const queryParams = [req.body.name, req.body.username, hashedPassword];
+      await dbquery(queryString, queryParams);
+      res.sendStatus(200);
     } catch (error) {
       next(error);
     }
