@@ -8,7 +8,7 @@
   },
   "main": "./dist/App.js",
   "scripts": {
-    "dev": "tsx watch --env-file=.env ./src/App.ts",
+    "dev": "set DEBUG=express-session & tsx watch --env-file=.env ./src/App.ts",
     "build": "tsc --build",
     "start": "npm run build & node --watch --env-file=.env ./dist/App.js"
   },
@@ -21,8 +21,10 @@
   "devDependencies": {
     "@eslint/js": "^9.6.0",
     "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
     "@types/eslint__js": "^8.42.3",
     "@types/express": "^4.17.21",
+    "@types/express-session": "^1.18.0",
     "@types/morgan": "^1.9.9",
     "@types/node": "^20.14.10",
     "@types/pg": "^8.11.6",
@@ -36,7 +38,9 @@
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "express-validator": "^7.1.0",
     "morgan": "^1.10.0",
     "pg": "^8.12.0"
