@@ -26,6 +26,7 @@ export const user_post = [
     .trim()
     .isLength({ min: 2, max: 30 })
     .bail()
+    .toLowerCase()
     .escape()
     .custom(async (value: string) => {
       const res = await dbquery(
@@ -49,7 +50,7 @@ export const user_post = [
     }
 
     try {
-      const hashedPassword = await bcrypt.hash(req.body.password, 16);
+      const hashedPassword = await bcrypt.hash(req.body.password, 10);
       const queryString = `INSERT INTO USERS (name, username, password) VALUES($1, $2, $3)`;
       const queryParams = [req.body.name, req.body.username, hashedPassword];
       await dbquery(queryString, queryParams);
