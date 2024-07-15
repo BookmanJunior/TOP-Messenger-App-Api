@@ -13,6 +13,8 @@ import { User } from "./Types/User";
 
 import UserRouter from "./Routes/Users";
 import SessionRouter from "./Routes/Session";
+import FriendsRouter from "./Routes/Friends";
+import { isAuthorized } from "./Auth/Auth";
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -46,15 +48,14 @@ passport.serializeUser((user, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser((id: string, done) => {
-  const queryString = "SELECT USERNAME, NAME FROM USERS WHERE ID = $1";
-  dbquery<User>(queryString, [id])
-    .then((user) => {
-      done(null, user.rows[0]);
-    })
-    .catch((err: unknown) => {
-      done(err, false);
-    });
+passport.deserializeUser(async (id: string, done) => {
+  const queryString = "SELECT ID, USERNAME, NAME FROM USERS WHERE ID = $1";
+  try {
+    const user = await dbquery<User>(queryString, [id]);
+    done(null, user.rows[0]);
+  } catch (error) {
+    done(error, false);
+  }
 });
 
 app.use((req: Request, res: Response, next: NextFunction) => {
@@ -64,6 +65,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use("/users", UserRouter);
 app.use("/session", SessionRouter);
+app.use("/friends", isAuthorized, FriendsRouter);
 
 app.listen(port, () => {
   console.log(`Listening on ${port}`);
