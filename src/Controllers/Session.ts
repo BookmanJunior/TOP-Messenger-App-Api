@@ -16,7 +16,6 @@ export const session_post = (
 ) => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   passport.authenticate("local", (err: unknown, user: User) => {
-    console.log(user);
     if (err) {
       next(err);
       return;
